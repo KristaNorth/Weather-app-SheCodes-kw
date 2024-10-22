@@ -164,8 +164,8 @@ main {
 }
 
 .weather-app-icon {
-  font-size: 44px;
-  margin-top: 22px;
+  width: 44px;
+  height: 44px;
 }
 
 .weather-app-temperature {
