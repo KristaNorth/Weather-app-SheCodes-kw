@@ -16,6 +16,9 @@ function refreshWeather(response) {
     windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
     temperatureElement.innerHTML = Math.round(temperature);
     iconElement.innerHTML = `<img src="${response.data.condition.icon.url}" class="weather-app-icon"/>`;
+}
+
+getForecast(response.data.city);
     
    function formatDate(date) {
       let day = date.getDay();
@@ -24,7 +27,7 @@ function refreshWeather(response) {
       let days ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", ];
       
       }
-  
+
       let day = days.[date.getDay()];
   
       if (minutes < 10) {
@@ -47,12 +50,19 @@ function refreshWeather(response) {
     searchCity(searchInput.value);
   }  
 
-  function displayForecast(){
-    let forecast = document.querySelector ("#forecast");
+function getForecast(city) {
+  let apiKey = "bd79ao40tde3dec118ca46bc3e6dd55f";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
+  function displayForecast(response) {
+  console.log(response).data;
+  
 
     let days = ["Tue", "Wed", "Thur", "Fri", "Sat"];
     let forecastHtml = "";
-
+  
     days.forEach(function (day) {
 forecastHtml = 
       forecastHtml +
@@ -65,14 +75,21 @@ forecastHtml =
     <div weather-forecast-temperature>>6°</div>
   </div>
 </div>
-    })`;
+    
+}
+  )
+    `
+    ;
 
     forecastElement.innerHtml = forecastHtml;
   }
   
+  let forecast = document.querySelector ("#forecast");
+
   let searchFormElement = document.querySelector("#search-form");
   searchFormElement.addEventListener("submit", handleSearchSubmit);
   
-  searchCity("Toronto");
-  displayForecast();
+  searchCity("Paris");
+ 
+
 
