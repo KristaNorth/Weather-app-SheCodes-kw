@@ -55,9 +55,10 @@ main {
 }
 
 .weather-app-details {
-  font-size: 16px;
+  font-size: 24px;
   color: rgba(39, 33, 66, 0.4);
   font-weight: 400;
+  line-height: 20px;
 }
 
 .weather-app-details strong {
@@ -74,14 +75,14 @@ main {
 }
 
 .weather-app-temperature {
-  font-size: 40px;
+  font-size: 80px;
   margin-left: 10px;
   font-weight: bold;
 }
 
 .weather-app-unit {
-  margin-top: 4px;
-  font-size: 4px;
+  margin-top: 16px;
+  font-size: 28px;
 }
 
 .weather-forecast {
