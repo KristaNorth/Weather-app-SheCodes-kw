@@ -28,7 +28,7 @@ getForecast(response.data.city);
       
       }
 
-      let day = days.[date.getDay()];
+      let day = days[date.getDay()];
   
       if (minutes < 10) {
         minutes = `0$(minutes)`;
@@ -91,9 +91,10 @@ forecastHtml =
   }
 
     forecastElement.innerHtml = forecastHtml;
+    
   }
   
-  let forecast = document.querySelector ("#forecast");
+ let forecastElement = document.querySelector("#forecast");
 
   let searchFormElement = document.querySelector("#search-form");
   searchFormElement.addEventListener("submit", handleSearchSubmit);
