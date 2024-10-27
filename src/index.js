@@ -32,12 +32,12 @@ getForecast(response.data.city);
   
       if (minutes < 10) {
         minutes = `0$(minutes)`;
+
       }
   
       return `${day} ${hours}: ${minutes}`;
   
   function searchCity(city) {
-    //separation of concerns(do one thing and do it well in functions)
    let apiKey = "bd79ao40tde3dec118ca46bc3e6dd55f";
    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
    axios.get(apiUrl).then(refreshWeather);
