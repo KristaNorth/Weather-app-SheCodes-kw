@@ -1,70 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/style.css" />
-    <link rel="stylesheet" href="src/index.js" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-    ">
-    <title>Weather-app</title>
-  </head>
-  <body>
-    <div class="weather-app-data">
-      <div class="weather-app">
-        <header>
-          <form class="search-form" id="search-form">
-            <input
-              type="search"
-              placeholder="Enter a city..."
-              required
-              id="search-form-input"
-              class="search-form input"
-            />
-            <input type="submit" value="Search" class="search-form-button" />
-          </form>
-        </header>
-        <main>
-          <div>
-            <h1 class="weather-app-city" id="city"></h1>
-            <p class="weather-app-details">
-              <span id="time"></span>
-              <span id="description"></span>
-              <br />
-              Humidity: <strong id="humidity"></strong>, Wind:
-              <strong id="wind-speed"></strong>
-            </p>
-          </div>
-          <div class="weather-app-container">
-            <span id="icon"> </span>
-            <span class="weather-app-temperature" id="temperature"></span>
-            <span class="weather-app-unit">°C</span>
-          </div>
-          <div class="weather-forecast" id="forecast"></div
-        </main>
-        <footer>
-          This project is coded by
-          <a href="https://github.com/KristaNorth" target="blank"
-            >Krista Woroschuk</a
-          >
-          is
-          <a
-            href="https://github.com/KristaNorth/Weather-app-SheCodes-kw"
-            target="blank"
-            >open-sourced on Github</a
-          >
-          and
-          <a href="https://weather-app-shecodes-kw.netlify.app/" target="blank"
-            >hosted by Netlify</a
-          >
-        </footer>
-      </div>
+function refreshWeather(response) { let temperatureElement =
+document.querySelector("#temperature"); let temperature =
+response.data.temperature.current; let cityElement =
+document.querySelector("#city"); let descriptionElement =
+document.querySelector("#description"); let humidityElement =
+document.querySelector("#humidity"); let windSpeedElement =
+document.querySelector("#wind-speed"); let timeElement =
+document.querySelector("#time"); let date = new Date(response.data.time * 1000);
+let iconElement = document.querySelector("#icon"); cityElement.innerHTML =
+response.data.city; timeElement.innerHTML = formatDate(date);
+descriptionElement.innerHTML = response.data.condition.description;
+humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
+windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
+temperatureElement.innerHTML = Math.round(temperature); iconElement.innerHTML =
+`<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`; }
+getForecast(response.data.city); function formatDate(date) { let day =
+date.getDay(); let minutes = date.getMinutes(); let hours = date.getHours(); let
+days ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+"Saturday", ]; } let day = days.[date.getDay()]; if (minutes < 10) { minutes =
+`0$(minutes)`; } return `${day} ${hours}: ${minutes}`; function searchCity(city)
+{ //separation of concerns(do one thing and do it well in functions) let apiKey
+= "bd79ao40tde3dec118ca46bc3e6dd55f"; let apiUrl =
+`https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+axios.get(apiUrl).then(refreshWeather); } function handleSearchSubmit(event) {
+event.preventDefault(); let searchInput =
+document.querySelector("#search-form-input"); searchCity(searchInput.value); }
+function formatDay(timestamp) { let date = new Date(timestamp * 1000); let days
+= ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; return days[date.getDay()];
+} function getForecast(city) { let apiKey = "bd79ao40tde3dec118ca46bc3e6dd55f";
+let apiUrl =
+`https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+axios.get(apiUrl).then(displayForecast); } function displayForecast(response) {
+console.log(response.data); let forecastHtml = "";
+response.data.daily.forEach(function (day, index) { if (index < 5) {
+forecastHtml = forecastHtml + `
+<div weather-forecast-day>
+  <div class="weather-forecast-date">${formatDay(day.time)}</div>
+  <div>
+    <img src="${day.condition.icon.url}" class="weather-forecast-icon" />
+  </div>
+  <div weather-forecast-temperatures>
+    <div weather-forecast-temperature>
+      <strong>${Math.round(day.temperature.maximum)}°</strong>
     </div>
-    <script src="src/index.js"></script>
-  </body>
-</html>
+    <div weather-forecast-temperature>
+      >${Math.round(day.temperature.minimum)}°
+    </div>
+  </div>
+</div>
+
+} ) ` ; } forecastElement.innerHtml = forecastHtml; } let forecast =
+document.querySelector ("#forecast"); let searchFormElement =
+document.querySelector("#search-form");
+searchFormElement.addEventListener("submit", handleSearchSubmit);
+searchCity("Toronto");
